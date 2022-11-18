@@ -49,12 +49,20 @@ Instruções de uso da API:
 const btnCadastrar = document.querySelector("#cadastrar");
 const inputNome = document.querySelector("#nome");
 const inputMatricula = document.querySelector("#matricula");
+const divLoadingCadastro = document.querySelector("#loading-cadastro");
 
 btnCadastrar.addEventListener("click", cadastrarAluno);
 
 function cadastrarAluno() {
   const nomeAluno = inputNome.value;
   const numeroMatricula = inputMatricula.value;
+
+  if (!nomeAluno || !numeroMatricula) {
+    alert("Preencha corretamente os campos");
+    return;
+  }
+
+  divLoadingCadastro.innerHTML += "Carregando...";
 
   const aluno = {
     nome: nomeAluno,
@@ -72,9 +80,12 @@ function cadastrarAluno() {
     .then((response) => {
       if (response.ok) {
         alert("Aluno cadastrado com sucesso");
+        inputNome.value = "";
+        inputMatricula.value = "";
+        divLoadingCadastro.innerHTML += "";
         return;
       }
-      throw new Error("Matricula já cadastrada");
+      throw new Error("Matricula ja cadastrada");
     })
     .catch((erro) => {
       alert(erro.message);
